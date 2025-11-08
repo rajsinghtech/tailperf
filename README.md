@@ -26,18 +26,6 @@ go build -o tailperf
 
 ### Docker
 
-**Using Docker Compose:**
-```bash
-# Copy and configure environment variables
-cp .env.example .env
-# Edit .env with your Tailscale auth key
-
-# Deploy with Docker Compose
-docker compose up -d
-```
-
-**Using Docker Run:**
-
 Server mode:
 ```bash
 docker run -d \
@@ -102,8 +90,6 @@ Supports both command-line flags and environment variables:
 | `-filter` | `TAILPERF_FILTER` | tailperf | Only test peers with this substring in hostname |
 | `-target` | `TAILPERF_TARGET` | - | Test only this specific peer (exact match, overrides `-filter`) |
 
-**Important:** Copy `.env.example` to `.env` and configure your auth key before using Docker.
-
 ## Example Output
 
 ```
@@ -121,29 +107,3 @@ Peer: tailperf-server-2 (100.64.0.3)
 
 ---
 ```
-
-
-## Connection Types
-
-- **Direct**: Peer-to-peer connection (fastest)
-- **DERP**: Relayed via Tailscale's servers
-- **Peer Relay**: Tunneled through another peer
-
-
-## Troubleshooting
-
-**Client mode requires Tailscale daemon:**
-- Ensure Tailscale is running: `tailscale status`
-- Connect to your tailnet: `tailscale up`
-
-**Server/client modes require auth key:**
-- Generate at https://login.tailscale.com/admin/settings/keys
-- Store in `.env` file (recommended) or pass via `-authkey` flag
-
-**No peers found:**
-- Verify servers are running with `-server` flag
-- Check `tailscale status` shows the peers online
-
-## License
-
-MIT

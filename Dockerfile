@@ -6,17 +6,23 @@ ENV GOTOOLCHAIN=auto
 
 WORKDIR /build
 
-# Copy go mod files
+# Install build dependencies
+RUN apk add --no-cache git ca-certificates
+
+# Copy go mod files first for better caching
 COPY go.mod go.sum ./
 
-# Download dependencies (includes gvisor override)
-RUN go mod download
+# Download dependencies with cache mount (includes gvisor override)
+RUN --mount=type=cache,target=/go/pkg/mod \
+    go mod download
 
 # Copy source code
 COPY *.go ./
 
-# Build the binary
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o tailperf .
+# Build the binary with cache mounts for faster rebuilds
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -s" -trimpath -o tailperf .
 
 # Final stage
 FROM alpine:latest
