@@ -1,0 +1,44 @@
+services:
+  tailperf-server-1:
+    build: .
+    container_name: tailperf-server-1
+    environment:
+      - TAILPERF_AUTHKEY=${TAILPERF_AUTHKEY}
+      - TAILPERF_HOSTNAME=tailperf-server-1
+      - TAILPERF_STATE_DIR=/var/lib/tailperf
+    command: ["-server"]
+    volumes:
+      - tailperf-server-1-data:/var/lib/tailperf
+    restart: unless-stopped
+
+  tailperf-server-2:
+    build: .
+    container_name: tailperf-server-2
+    environment:
+      - TAILPERF_AUTHKEY=${TAILPERF_AUTHKEY}
+      - TAILPERF_HOSTNAME=tailperf-server-2
+      - TAILPERF_STATE_DIR=/var/lib/tailperf
+    command: ["-server"]
+    volumes:
+      - tailperf-server-2-data:/var/lib/tailperf
+    restart: unless-stopped
+
+  # tailperf-client:
+  #   build: .
+  #   container_name: tailperf-client
+  #   environment:
+  #     - TAILPERF_AUTHKEY=${TAILPERF_AUTHKEY}
+  #     - TAILPERF_HOSTNAME=tailperf-client
+  #     - TAILPERF_STATE_DIR=/var/lib/tailperf
+  #   command: ["-client", "-interval=20s", "-duration=5s"]
+  #   volumes:
+  #     - tailperf-client-data:/var/lib/tailperf
+  #   depends_on:
+  #     - tailperf-server-1
+  #     - tailperf-server-2
+  #   restart: unless-stopped
+
+volumes:
+  tailperf-server-1-data:
+  tailperf-server-2-data:
+  # tailperf-client-data:

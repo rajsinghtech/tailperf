@@ -1,0 +1,24 @@
+# Ignore build artifacts
+tailperf
+*.test
+*.out
+
+# Ignore state directories
+.tailperf/
+
+# Ignore git
+.git/
+.gitignore
+
+# Ignore docs
+README.md
+QUICKSTART.md
+test_local.sh
+
+# Ignore IDE
+.vscode/
+.idea/
+*.swp
+
+# Ignore OS
+.DS_Store
